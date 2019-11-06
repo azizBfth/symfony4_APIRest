@@ -19,22 +19,28 @@ use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les anno
 class PlaceController extends AbstractController
 {
 
- /**
- * @Rest\View(statusCode=Response::HTTP_CREATED)
- * @Rest\Post("/places")
- */
-public function postPlacesAction(Request $request)
-{
-    $place = new Place();
-    $place->setName($request->get('name'))
-        ->setAddress($request->get('address'));
+    
+ 
+     /**
+     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\Post("/places")
+     */
+    public function postPlacesAction(Request $request)
+    {
+        $place = new Place();
+        $form = $this->createForm(PlaceType::class, $place);
 
-    $em = $this->getDoctrine()->getManager();
-    $em->persist($place);
-    $em->flush();
+        $form->submit($request->request->all()); // Validation des données
 
-    return $place;
-}
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($place);
+            $em->flush();
+            return $place;
+        } else {
+            return $form;
+        }
+    }
 
      /**
      * @Rest\View() 

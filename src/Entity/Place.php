@@ -5,7 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PlaceRepository")
+ * @ORM\Entity()
+
  */
 class Place 
 {
